@@ -1,0 +1,46 @@
+ext {
+    version = [
+            material3Compose : '1.0.0-beta02',
+            composeVersion   : '1.2.0',
+            materialCompose  : '1.1.1',
+            androidXCore     : '1.8.0',
+            appCompat        : '1.4.2',
+            material         : '1.6.1',
+            hilt             : hilt_version,
+            coroutinesVersion: '1.6.1',
+            lifecycle        : '2.5.0',
+            TimberVersion     : '5.0.1',
+    ]
+
+    dependenciesList = [
+            compose     : [
+                    "androidx.compose.ui:ui:${version.composeVersion}",
+                    "androidx.compose.foundation:foundation:${version.composeVersion}",
+                    "androidx.compose.material3:material3:${version.material3Compose}",
+                    "androidx.compose.material:material:${version.materialCompose}",
+                    "androidx.compose.ui:ui-tooling:${version.composeVersion}",
+                    "androidx.compose.material:material-icons-extended:${version.composeVersion}",
+                    "androidx.lifecycle:lifecycle-viewmodel-compose:${version.lifecycle}",
+                    "androidx.compose.runtime:runtime-livedata:${version.composeVersion}",
+                    "androidx.activity:activity-compose:1.5.1",
+            ],
+
+            androidX    : [
+                    "androidx.core:core-ktx:${version.androidXCore}",
+                    "androidx.appcompat:appcompat:${version.appCompat}",
+                    "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+            ],
+            design      : [
+                    "com.google.android.material:material:${version.material}",
+            ],
+            hiltAndroid : ["com.google.dagger:hilt-android:${version.hilt}",
+                           "androidx.hilt:hilt-navigation-compose:1.0.0"],
+            hiltCompiler: "com.google.dagger:hilt-android-compiler:${version.hilt}",
+
+            coroutines  : [
+                    "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.coroutinesVersion}",
+                    "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutinesVersion}",
+            ],
+            Timber             : "com.jakewharton.timber:timber:${version.TimberVersion}",
+    ]
+}

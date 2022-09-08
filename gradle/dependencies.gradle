@@ -10,6 +10,7 @@ ext {
             coroutinesVersion: '1.6.1',
             lifecycle        : '2.5.0',
             TimberVersion     : '5.0.1',
+            coilVersion       : '2.0.0-rc02',
     ]
 
     dependenciesList = [
@@ -36,7 +37,7 @@ ext {
             hiltAndroid : ["com.google.dagger:hilt-android:${version.hilt}",
                            "androidx.hilt:hilt-navigation-compose:1.0.0"],
             hiltCompiler: "com.google.dagger:hilt-android-compiler:${version.hilt}",
-
+            coil: "io.coil-kt:coil-compose:${version.coilVersion}",
             coroutines  : [
                     "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.coroutinesVersion}",
                     "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutinesVersion}",

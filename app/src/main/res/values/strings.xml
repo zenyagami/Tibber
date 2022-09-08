@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tibber</string>
+    <string name="power_ups_view_title">Power-ups</string>
+    <string name="available_power_up_header_label">Available power-ups</string>
 </resources>

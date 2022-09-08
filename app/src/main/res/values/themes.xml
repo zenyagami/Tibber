@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Tibber" parent="Theme.Material3.Light.NoActionBar" />
+    <style name="Theme.Tibber" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/blue_100</item>
+    </style>
+
 </resources>

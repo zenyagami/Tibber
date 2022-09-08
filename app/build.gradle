@@ -54,6 +54,7 @@ dependencies {
     implementation dependenciesList.design
     implementation dependenciesList.coroutines
     implementation dependenciesList.androidX
+    implementation dependenciesList.coil
 
     implementation project(":domain")
     implementation dependenciesList.hiltAndroid

@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun displayDeviceDetails(powerUpModel: PowerUpModel) {
-        HomeFragmentDirections.actionHomeFragmentToPowerUpDeviceDetailsFragment(
+        HomeFragmentDirections.actionHomeFragmentToPowerUpDetailsActivity(
             powerUpModel
         ).also { findNavController().navigate(it) }
     }

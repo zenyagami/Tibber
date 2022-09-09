@@ -8,20 +8,22 @@
         android:id="@+id/homeFragment"
         android:name="com.zenkun.tibber.ui.HomeFragment"
         android:label="HomeFragment">
+
         <action
-            android:id="@+id/action_homeFragment_to_powerUpDeviceDetailsFragment"
-            app:destination="@id/powerUpDeviceDetailsFragment">
+            android:id="@+id/action_homeFragment_to_powerUpDetailsActivity"
+            app:destination="@id/powerUpDetailsActivity">
             <argument
                 android:name="powerUpDevice"
                 app:argType="com.zenkun.domain.model.PowerUpModel" />
         </action>
     </fragment>
-    <fragment
-        android:id="@+id/powerUpDeviceDetailsFragment"
-        android:name="com.zenkun.tibber.ui.PowerUpDeviceDetailsFragment"
-        android:label="PowerUpDeviceDetailsFragment">
+
+    <activity
+        android:id="@+id/powerUpDetailsActivity"
+        android:name="com.zenkun.tibber.ui.PowerUpDetailsActivity"
+        android:label="PowerUpDetailsActivity">
         <argument
             android:name="powerUpDevice"
             app:argType="com.zenkun.domain.model.PowerUpModel" />
-    </fragment>
+    </activity>
 </navigation>

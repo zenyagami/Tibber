@@ -11,6 +11,7 @@ ext {
             lifecycle        : '2.5.0',
             TimberVersion     : '5.0.1',
             coilVersion       : '2.0.0-rc02',
+            androidXbrowser   : '1.4.0',
     ]
 
     dependenciesList = [
@@ -29,7 +30,8 @@ ext {
             androidX    : [
                     "androidx.core:core-ktx:${version.androidXCore}",
                     "androidx.appcompat:appcompat:${version.appCompat}",
-                    "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+                    "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1",
+                    "androidx.browser:browser:${version.androidXbrowser}",
             ],
             design      : [
                     "com.google.android.material:material:${version.material}",

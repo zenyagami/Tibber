@@ -3,6 +3,8 @@
 package com.zenkun.tibber.ui.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,17 +15,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.zenkun.domain.model.PowerUpModel
 import com.zenkun.tibber.R
+import com.zenkun.tibber.common.theme.TibberAppTheme
 import com.zenkun.tibber.common.theme.TibberTheme
 
 @Composable
@@ -66,9 +73,10 @@ fun PowerUpsScreenContent(
                 stickyHeader {
                     Text(
                         text = stringResource(
-                            id = R.string.available_power_up_header_label
+                            id = R.string.available_power_up_header_label,
                         ),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TibberAppTheme.colors.secondary
                     )
                 }
                 items(powerUpList) { item ->
@@ -76,7 +84,8 @@ fun PowerUpsScreenContent(
                         title = item.title,
                         description = item.description,
                         imageUrl = item.imageUrl,
-                        onItemClicked = {}
+                        onItemClicked = {},
+                        navIcon = Icons.Default.NavigateNext
                     )
                 }
             }
@@ -89,12 +98,23 @@ fun PowerUpItem(
     title: String,
     description: String,
     imageUrl: String,
-    onItemClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    imageSize: Dp = 70.dp,
+    cardShape: Shape = CardDefaults.shape,
+    onItemClicked: (() -> Unit)? = null,
+    navIcon: ImageVector? = null
 ) {
-    Card(
-        onClick = onItemClicked,
-        modifier = modifier
+
+    val clickModifier = onItemClicked?.let {
+        modifier
+            .clip(cardShape)
+            .clickable(onClick = onItemClicked)
+    } ?: modifier.clip(cardShape)
+
+    Surface(
+        shape = cardShape,
+        modifier = clickModifier,
+        color = TibberAppTheme.colors.cardBackgroundColor
     ) {
         Row(
             modifier = Modifier
@@ -110,7 +130,7 @@ fun PowerUpItem(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(70.dp)
+                    .size(imageSize)
             )
             Column(
                 modifier = Modifier
@@ -123,22 +143,26 @@ fun PowerUpItem(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = description,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TibberAppTheme.colors.secondary
                 )
             }
-            Icon(
-                imageVector = Icons.Default.NavigateNext,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp)
-                    .align(CenterVertically),
-                tint = MaterialTheme.colorScheme.onSurface.copy(
-                    alpha = 0.7f
+            navIcon?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .align(CenterVertically),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.7f
+                    )
                 )
-            )
+            }
+
         }
     }
 }

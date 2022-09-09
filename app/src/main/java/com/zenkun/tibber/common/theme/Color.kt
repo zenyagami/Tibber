@@ -11,5 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val Blue100 = Color(0xFF23B8CC)
+val OnSurfaceSecondary = Color(0xFF7F7F7F)
 
+val GrayBackground = Color(0xFFE5E5E5)
 

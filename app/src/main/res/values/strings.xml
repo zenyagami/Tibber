@@ -2,4 +2,8 @@
     <string name="app_name">Tibber</string>
     <string name="power_ups_view_title">Power-ups</string>
     <string name="available_power_up_header_label">Available power-ups</string>
+    <string name="power_up_details_view_more_title_label">More about %s</string>
+    <string name="power_up_disconnect_device_button">Disconnect from Tibber</string>
+    <string name="power_up_connect_device_button">Connect to Tibber</string>
+    <string name="buy_power_up_device_button">Buy at the Tibber store</string>
 </resources>

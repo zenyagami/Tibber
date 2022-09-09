@@ -2,8 +2,8 @@
 
 package com.zenkun.tibber.ui.compose
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,13 +30,46 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.zenkun.domain.model.PowerUpModel
 import com.zenkun.tibber.R
+import com.zenkun.tibber.common.HomeViewModel
+import com.zenkun.tibber.common.model.Lce
 import com.zenkun.tibber.common.theme.TibberAppTheme
 import com.zenkun.tibber.common.theme.TibberTheme
 
 @Composable
+fun PowerUpsScreen(
+    onItemClicked: (PowerUpModel) -> Unit,
+    viewModel: HomeViewModel,
+) {
+    val listState = viewModel.getList.collectAsState(initial = Lce.Loading).value
+    var powerUpList by remember { mutableStateOf<List<PowerUpModel>>(emptyList()) }
+
+    val isLoading = listState is Lce.Loading
+
+    when (listState) {
+        is Lce.Failure -> {
+            Toast.makeText(
+                LocalContext.current,
+                R.string.general_internet_error_message, Toast.LENGTH_LONG
+            ).show()
+        }
+        is Lce.Success -> {
+            powerUpList = listState.data
+        }
+        Lce.Loading -> Unit
+    }
+
+    PowerUpsScreenContent(
+        isLoading = isLoading,
+        powerUpList = powerUpList,
+        onItemClicked = onItemClicked
+    )
+}
+
+@Composable
 fun PowerUpsScreenContent(
     isLoading: Boolean,
-    powerUpList: List<PowerUpModel>
+    powerUpList: List<PowerUpModel>,
+    onItemClicked: (PowerUpModel) -> Unit,
 ) {
     Scaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
@@ -64,19 +97,20 @@ fun PowerUpsScreenContent(
                 .padding(it)
                 .padding(horizontal = 16.dp),
         ) {
+
             val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.padding(top = 32.dp)
             ) {
-                stickyHeader {
+                item {
                     Text(
                         text = stringResource(
                             id = R.string.available_power_up_header_label,
                         ),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TibberAppTheme.colors.secondary
+                        color = TibberAppTheme.colors.secondary,
+                        modifier = Modifier.padding(top = 32.dp)
                     )
                 }
                 items(powerUpList) { item ->
@@ -84,7 +118,7 @@ fun PowerUpsScreenContent(
                         title = item.title,
                         description = item.description,
                         imageUrl = item.imageUrl,
-                        onItemClicked = {},
+                        onItemClicked = { onItemClicked(item) },
                         navIcon = Icons.Default.NavigateNext
                     )
                 }
@@ -194,7 +228,8 @@ private fun PreviewPowerUpsScreenContent() {
         PowerUpsScreenContent(
             isLoading = false,
             powerUpList = getMockedPowerUpList()
-                .shuffled()
+                .shuffled(),
+            onItemClicked = {}
         )
     }
 }

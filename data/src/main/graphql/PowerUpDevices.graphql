@@ -1,0 +1,11 @@
+query PowerUpDevices {
+ assignmentData {
+ title
+ description
+ longDescription
+ connected
+ storeUrl
+ imageUrl
+ }
+
+}

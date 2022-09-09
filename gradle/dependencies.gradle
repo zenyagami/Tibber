@@ -9,9 +9,12 @@ ext {
             hilt             : hilt_version,
             coroutinesVersion: '1.6.1',
             lifecycle        : '2.5.0',
-            TimberVersion     : '5.0.1',
-            coilVersion       : '2.0.0-rc02',
-            androidXbrowser   : '1.4.0',
+            TimberVersion    : '5.0.1',
+            coilVersion      : '2.0.0-rc02',
+            androidXbrowser  : '1.4.0',
+            apollo           : '3.6.0',
+            activityKtx      : '1.5.1',
+            fragmentKtx       : '1.5.2',
     ]
 
     dependenciesList = [
@@ -27,23 +30,34 @@ ext {
                     "androidx.activity:activity-compose:1.5.1",
             ],
 
-            androidX    : [
+            androidX           : [
                     "androidx.core:core-ktx:${version.androidXCore}",
                     "androidx.appcompat:appcompat:${version.appCompat}",
                     "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1",
                     "androidx.browser:browser:${version.androidXbrowser}",
+                    "androidx.activity:activity-ktx:${version.activityKtx}",
+                    "androidx.fragment:fragment-ktx:${version.fragmentKtx}",
             ],
-            design      : [
+            design             : [
                     "com.google.android.material:material:${version.material}",
             ],
-            hiltAndroid : ["com.google.dagger:hilt-android:${version.hilt}",
-                           "androidx.hilt:hilt-navigation-compose:1.0.0"],
-            hiltCompiler: "com.google.dagger:hilt-android-compiler:${version.hilt}",
-            coil: "io.coil-kt:coil-compose:${version.coilVersion}",
-            coroutines  : [
+            hiltAndroid        : ["com.google.dagger:hilt-android:${version.hilt}",
+                                  "androidx.hilt:hilt-navigation-compose:1.0.0"],
+            hiltCompiler       : "com.google.dagger:hilt-android-compiler:${version.hilt}",
+            coil               : "io.coil-kt:coil-compose:${version.coilVersion}",
+            coroutines         : [
                     "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.coroutinesVersion}",
                     "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutinesVersion}",
             ],
             Timber             : "com.jakewharton.timber:timber:${version.TimberVersion}",
+
+            network            : [
+                    "com.apollographql.apollo3:apollo-runtime:${appollo_version}",
+            ],
+
+            navigationComponent: [
+                    "androidx.navigation:navigation-fragment-ktx:$nav_version",
+                    "androidx.navigation:navigation-ui-ktx:$nav_version"
+            ]
     ]
 }

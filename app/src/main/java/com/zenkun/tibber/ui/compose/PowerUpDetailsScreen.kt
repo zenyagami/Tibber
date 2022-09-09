@@ -102,6 +102,7 @@ fun PowerUpDetailsScreenContent(powerUpModel: PowerUpModel) {
                     color = TibberAppTheme.colors.secondary,
                     modifier = Modifier.padding(top = 8.dp)
                 )
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
 

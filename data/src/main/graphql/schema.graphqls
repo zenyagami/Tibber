@@ -1,0 +1,3334 @@
+type Query {
+  me: Me
+
+  preOnboarding: PreOnboarding!
+
+  assignmentData: [AssignmentPowerUpType!]
+}
+
+type Me {
+  id: String
+
+  firstName: String
+
+  lastName: String
+
+  fullName: String
+
+  ssn: String
+
+  email: String
+
+  language: String
+
+  tone: String
+
+  mobile: String
+
+  webViewToken: WebViewTokenType!
+
+  items: [SettingLayoutItem]
+
+  settings: [Setting]
+
+  settingsLayout: [SettingLayoutItem]
+
+  welcomeGreeting: Greeting @deprecated(reason: "Moved to home.messages. 2020-10-06")
+
+  appState: AppState
+
+  home(id: String): Home
+
+  homes: [Home]
+
+  wallet: Wallet
+
+  electricVehicleConsumptionMonths(id: String): [ElectricVehicleConsumptionMonth]
+
+  electricVehicleConsumption(id: String, from: String, to: String, resolution: String): ElectricVehicleConsumption
+
+  subscribableNotificationCategories: SubscribableNotificationCategory!
+
+  subscribableNotifications: [SubscribableNotification!]!
+
+  pushNotifications: [PushNotification!]!
+
+  account: Account
+
+  vehicle(id: String, context: [QueryInputArguments]): Vehicle
+
+  myVehicles: MyVehicles
+
+  myVehicle(id: String): MyVehicle
+
+  paymentMethods: PaymentMethods
+
+  meters: Meters
+
+  deletionStatus: DeletionStatus
+}
+
+type WebViewTokenType {
+  token: String!
+
+  expiresAt: String!
+}
+
+type SettingLayoutItem {
+  type: String!
+
+  title: String!
+
+  description: String
+
+  valueText: String
+
+  imgUrl: String
+
+  isUpdated: Boolean
+
+  isEnabled: Boolean
+
+  callToAction: CallToAction
+
+  childItems: [SettingLayoutItem]
+
+  settingKey: String
+
+  settingKeyForIsHidden: String
+
+  setting: Setting @deprecated(reason: "Use settingKey instead")
+
+  dependsOnSetting: String @deprecated(reason: "Use settingKeyForIsHidden instead")
+}
+
+type CallToAction {
+  text: String
+
+  url: String
+
+  redirectUrlStartsWith: String
+
+  link: String
+
+  action: String
+}
+
+type Setting {
+  key: String!
+
+  value: DynamicType
+
+  valueType: SettingValueType!
+
+  valueIsArray: Boolean!
+
+  isReadOnly: Boolean!
+
+  inputOptions: SettingsItemInputOptions
+}
+
+scalar DynamicType
+
+enum SettingValueType {
+  string
+
+  boolean
+
+  int
+
+  float
+}
+
+type SettingsItemInputOptions {
+  type: String!
+
+  pickerOptions: SettingInputPickerOptions
+
+  rangeOptions: SettingInputRangeOptions
+
+  selectOptions: [SelectValue!]
+
+  timeOptions: SettingInputTimeOptions
+
+  stringValues: [String] @deprecated(reason: "Replaced")
+
+  intValues: [Int] @deprecated(reason: "Replaced")
+
+  textValues: [String] @deprecated(reason: "Replaced")
+
+  unitText: String @deprecated(reason: "Replaced")
+}
+
+type SettingInputPickerOptions {
+  values: [DynamicType!]!
+
+  postFix: String!
+}
+
+type SettingInputRangeOptions {
+  max: Int!
+
+  min: Int!
+
+  step: Int!
+
+  defaultValue: Int
+
+  displayText: String!
+
+  displayTextPlural: String
+}
+
+type SelectValue {
+  value: DynamicType!
+
+  title: String!
+
+  description: String
+
+  imgUrl: String
+}
+
+type SettingInputTimeOptions {
+  doNotSetATimeText: String
+}
+
+type Greeting {
+  title: String
+
+  description: String
+
+  showUntil: String
+}
+
+type AppState {
+  journey: AppStateJourney
+
+  frontScreens: [AppStateFronScreen]
+}
+
+type AppStateJourney {
+  hasVisitedPairDevices: Boolean
+
+  hasVisitedDeviceList: Boolean
+}
+
+type AppStateFronScreen {
+  homeId: String
+
+  bubbles: [String]
+
+  bubblesSortOrder: [String]
+}
+
+type Home {
+  id: ID!
+
+  avatar: Avatar! @deprecated(reason: "Moved to settings. 2020-10-06")
+
+  timeZone: String!
+
+  title: String @deprecated(reason: "Moved to settings. 2020-10-06")
+
+  type: String! @deprecated(reason: "Moved to settings. 2020-10-06")
+
+  hasEnergyDeal: Boolean! @deprecated(reason: "Moved to hasSignedEnergyDeal. 2022-08-17.")
+
+  hasSignedEnergyDeal: Boolean!
+
+  hasConsumption: Boolean!
+
+  manualMeterReadingIsSupported: Boolean @deprecated(reason: "2021-11-17. Use currentMeter.isUserRead instead")
+
+  currentSettlementMethod: SettlementMethod @deprecated(reason: "Removed. 2020-10-06")
+
+  meteringPointIdFormatted: String
+
+  currentMeterNoFormatted: String @deprecated(reason: "2021-11-17. Use currentMeter.meterNo instead")
+
+  currentMeter: CurrentMeter
+
+  settings: [Setting]!
+
+  settingsLayout: [SettingLayoutItem]!
+
+  address: Address!
+
+  hasSmartMeterCapabilities: Boolean!
+
+  showMeterNo: Boolean!
+
+  showMeteringPointId: Boolean!
+
+  subscription: Subscription
+
+  consumptionAnalysis(useDemoData: Boolean): ConsumptionAnalysis
+
+  consumptionAnalysisItems(from: String, to: String, resolution: Resolution, useDemoData: Boolean): [ConsumptionAnalysisItem]
+
+  consumptionAnalysisItemsForUserReadMeter(from: String, to: String, useDemoData: Boolean): [ConsumptionAnalysisItemForUserReadMeter]
+
+  consumptionAnalysisItemLatestMonth: ConsumptionAnalysisItem
+
+  consumptionChart(from: String, to: String, resolution: Resolution, useDemoData: Boolean): ConsumptionChart
+
+  productionChart(from: String, to: String, resolution: Resolution, useDemoData: Boolean): ConsumptionChart
+
+  productionAnalysis(useDemoData: Boolean): ConsumptionAnalysis
+
+  productionAnalysisItems(from: String, to: String, resolution: Resolution, useDemoData: Boolean): [ConsumptionAnalysisItem]
+
+  comparisonAnalysis(useDemoData: Boolean): ConsumptionAnalysis
+
+  comparisonAnalysisItems(from: String, to: String, resolution: Resolution, useDemoData: Boolean): [Comparison]
+
+  profileQuestions: [HomeProfileQuestion] @deprecated(reason: "Moved to settings & settingsLayout. 2020-10-08")
+
+  temperatures(from: String, to: String, resolution: String, useDemoData: Boolean): [DynamicType]
+
+  signupStatus: SignupStatus
+
+  costDisaggregationAnalysis(useDemoData: Boolean): ConsumptionAnalysis
+
+  costDisaggregationAnalysisItems(from: String, to: String, resolution: Resolution, useDemoData: Boolean): [EnergyCostDisaggregation]
+
+  weather: Weather
+
+  awayMode: AwayMode
+
+  report: ReportRoot @deprecated(reason: "Deprecated. Use analysis instead. 2022-04-24")
+
+  analysis: Analysis
+
+  thermostat(id: String): Thermostat
+
+  electricVehicles: [ElectricVehicle]
+
+  electricVehicle(id: String, context: [QueryInputArguments]): ElectricVehicle
+
+  evCharger(id: String): EvCharger
+
+  evChargerPairConfig(id: String): EvChargerPairConfig
+
+  evChargerConsumptionMonths(id: String): [ElectricVehicleConsumptionMonth]
+
+  evChargerConsumption(id: String, from: String, to: String, resolution: String): [ElectricVehicleConsumptionValue]
+
+  sensors: [Sensor]
+
+  sensorsHistory: [SensorHistory]
+
+  energyDeal: EnergyDeal
+
+  powerup: Powerup
+
+  invite: Invite
+
+  pulse: Pulse
+
+  pulsePairConfig(pulseCode: String!, pulseType: String, ignoreImpersonationRestriction: Boolean): PulsePairConfig
+
+  pulsePairStatus(id: String): PulsePairStatus
+
+  pulseMeasurements(id: String, from: String, to: String): [PulseMeasurement]
+
+  pulseMeasurementHistory(id: String, from: String, to: String): [PulseMeasurement]
+
+  fuseLoadExcess: FuseLoadExcess!
+
+  inverter(id: String): Inverter
+
+  inverterProduction(id: String, from: String, to: String, resolution: String): InverterProduction
+
+  messages: [Message]
+
+  lighting: Lighting
+
+  bubbles: [HomeScreenBubble]
+
+  energySavingsAnalysis(useDemoData: Boolean): ConsumptionAnalysis
+
+  energySavingsAnalysisItems(from: String!, to: String!, resolution: Resolution!, useDemoData: Boolean = false): [EnergySavingsAnalysisItem]!
+}
+
+enum Avatar {
+  floorhouse1
+
+  floorhouse2
+
+  floorhouse3
+
+  castle
+
+  apartment
+
+  cottage
+
+  rowhouse
+}
+
+type SettlementMethod {
+  method: String
+
+  validFrom: String
+}
+
+type CurrentMeter {
+  id: String!
+
+  meterNo: String!
+
+  isUserRead: Boolean!
+}
+
+type Address {
+  addressText: String
+
+  city: String!
+
+  postalCode: String!
+
+  """
+  ISO 3166-1 alpha-2
+  """
+  country: String!
+
+  latitude: Float
+
+  longitude: Float
+
+  astronomy: Astronomy
+}
+
+type Astronomy {
+  sunIsUp: Boolean
+
+  sunrise: String
+
+  sunset: String
+
+  moonFraction: Float
+}
+
+type Subscription {
+  priceRating: PriceRatingRoot
+
+  invoices: [Invoice]
+}
+
+type PriceRatingRoot {
+  isAvailable: Boolean!
+
+  useTotalAsDefault: Boolean!
+
+  useTotalToggler: PriceRatingUseTotalToggler
+
+  """
+  Will be null if showing grid price is not supported in given market. I.e. grid price toggler will not show in the app
+  """
+  gridPriceToggler: PriceRatingGridPriceToggler
+
+  articles: [ArticleItem!]!
+
+  highPriceNotificationId: String
+
+  thresholdPercentages: PriceRatingTresholdPercentages!
+
+  defaultResolution: Resolution!
+
+  hourly: PriceRating
+
+  daily: PriceRating
+
+  monthly: PriceRating
+
+  useTotalIsConfigurable: Boolean! @deprecated(reason: "2018-06 replaced by useTotalToggler")
+
+  useTotalText: String! @deprecated(reason: "2018-06 replaced by useTotalToggler")
+}
+
+type PriceRatingUseTotalToggler {
+  title: String!
+
+  description: String!
+}
+
+type PriceRatingGridPriceToggler {
+  """
+  Will be false if the grid company does not have an api from where we can fetch prices
+  """
+  gridCompanyProvidesData: Boolean!
+
+  gridCompanyName: String!
+}
+
+type ArticleItem {
+  title: String!
+
+  description: String!
+
+  readMoreText: String!
+
+  readMoreUrl: String!
+
+  imageUrl: String
+}
+
+type PriceRatingTresholdPercentages {
+  high: Float!
+
+  low: Float!
+
+  highBreakpoint: Float!
+}
+
+enum Resolution {
+  annual
+
+  monthly
+
+  daily
+
+  hourly
+}
+
+type PriceRating {
+  minEnergy: Float!
+
+  maxEnergy: Float!
+
+  minTotal: Float!
+
+  maxTotal: Float!
+
+  currency: String!
+
+  colorOffsets: PriceRatingColorOffset! @deprecated(reason: "2021-08-24 Use thresholdPercentages on priceRating instead.")
+
+  entriesAvgEnergy: Float
+
+  entriesAvgTotal: Float
+
+  entries: [PriceRatingEntry!]!
+}
+
+type PriceRatingColorOffset {
+  fullGreenPercent: Float!
+
+  fullYellowPercent: Float!
+
+  fullRedPercent: Float!
+}
+
+type PriceRatingEntry {
+  time: String!
+
+  timeText: String
+
+  """
+  The energy price excluding taxes and fees
+  """
+  energy: Float!
+
+  """
+  The energy price including taxes and fees
+  """
+  total: Float!
+
+  """
+  The grid price including taxes and fees
+  """
+  gridPrice: Float
+
+  difference: Float! @deprecated(reason: "2021-13-12. Calculated in the apps now.")
+}
+
+type Invoice {
+  id: Int
+
+  no: String
+
+  date: String
+
+  dueDate: String
+
+  totalCost: Float
+
+  totalCostLocalized: String
+
+  totalEnergyConsumption: Float
+
+  totalEnergyConsumptionLocalized: String
+
+  paymentReference: String
+
+  showManualPaymentReferences: Boolean
+
+  bankAccount: String
+
+  pdfUrl: String
+
+  timeZone: String @deprecated(reason: "2021-02-03: Unused")
+
+  currency: String
+
+  payment: InvoicePayment
+
+  sections: [InvoiceSection]
+
+  from: String
+
+  to: String
+
+  footerText: String
+}
+
+type InvoicePayment {
+  status: String
+
+  method: String
+
+  date: String
+
+  failureText: String
+
+  creditCard: CreditCard
+}
+
+type CreditCard {
+  brand: String
+
+  last4: String
+}
+
+type InvoiceSection {
+  type: String
+
+  text: String
+
+  subText: String
+
+  consumption: Float
+
+  consumptionLocalized: String
+
+  consumptionUnit: String
+
+  price: Float
+
+  priceLocalized: String
+
+  priceUnit: String
+
+  cost: Float
+
+  costLocalized: String
+
+  costUnit: String
+}
+
+type ConsumptionAnalysis {
+  siteTitle: String!
+
+  resolutions: [Resolution!]!
+
+  defaultResolution: Resolution @deprecated(reason: "Deprecated 19.11.11")
+
+  firstValueAt: String @deprecated(reason: "Deprecated 19.11.11")
+
+  valuesFrom: String
+
+  valuesTo: String
+
+  isPreLive: Boolean!
+
+  currency: String!
+}
+
+type ConsumptionAnalysisItem {
+  from: String!
+
+  to: String!
+
+  description: String!
+
+  netConsumption: ConsumptionAndCost
+
+  selfConsumption: ConsumptionAndCost
+
+  estimatedTotalConsumption: ConsumptionAndCost
+
+  resolution: Resolution
+
+  currency: String
+
+  price: Float
+
+  title: String @deprecated(reason: "Deprecated 21.11.16. Not in use anymore")
+
+  description2: String @deprecated(reason: "Deprecated 21.11.16. Moved to description")
+
+  totalConsumptionBubble: Bubble! @deprecated(reason: "Deprecated 21.11.16. Use netConsumption+selfConsumption instead")
+
+  netConsumptionRow: ConsumptionAnalysisRow! @deprecated(reason: "Deprecated 21.11.16. Use netConsumption instead")
+
+  selfConsumptionRow: ConsumptionAnalysisRow @deprecated(reason: "Deprecated 21.11.16. Use selfConsumption instead")
+
+  chart: ConsumptionChart! @deprecated(reason: "Deprecated 21.11.16. Building chart responsibility moved to app")
+
+  netConsumptionTitle: String @deprecated(reason: "Deprecated 19.10.31")
+
+  netConsumptionBubble: Bubble @deprecated(reason: "Deprecated 19.10.31")
+
+  selfConsumptionTitle: String @deprecated(reason: "Deprecated 19.10.31")
+
+  selfConsumptionBubble: Bubble @deprecated(reason: "Deprecated 19.10.31")
+}
+
+type ConsumptionAndCost {
+  consumption: Float!
+
+  cost: Float
+}
+
+type Bubble {
+  value: Float
+
+  valueText: String!
+
+  percent: Int!
+
+  unit: String!
+
+  description: String
+}
+
+type ConsumptionAnalysisRow {
+  title: String!
+
+  description: String!
+
+  percent: Int!
+}
+
+type ConsumptionChart {
+  totalConsumptionYAxis: YAxis!
+
+  totalCostYAxis: YAxis!
+
+  consumptionUnitText: String!
+
+  costUnitText: String!
+
+  priceUnitText: String!
+
+  itemsDecimalPlaces: Int!
+
+  displayCostAsDefault: Boolean!
+
+  items: [ConsumptionChartItem!]
+
+  yMin: Float @deprecated(reason: "Moved to totalConsumptionYAxis")
+
+  yMax: Float @deprecated(reason: "Moved to totalConsumptionYAxis")
+
+  unitText: String @deprecated(reason: "Moved to consumptionUnitText & costUnitText")
+}
+
+type YAxis {
+  min: Float!
+
+  max: Float!
+}
+
+type ConsumptionChartItem {
+  from: String!
+
+  to: String!
+
+  fromToText: String!
+
+  totalConsumption: Float
+
+  netConsumption: Float
+
+  selfConsumption: Float
+
+  totalCost: Float
+
+  price: Float
+
+  showSelfConsumption: Boolean @deprecated(reason: "Deprecated 19.11.06")
+
+  isPreLive: Boolean!
+
+  isEstimated: Boolean!
+}
+
+type ConsumptionAnalysisItemForUserReadMeter {
+  from: String!
+
+  to: String!
+
+  totalConsumption: ConsumptionAndCost
+
+  totalConsumptionBreakdown: [ConsumptionBreakdown!]!
+
+  estimatedTotalConsumption: ConsumptionAndCost
+
+  meterReadings: [MeterReading!]!
+
+  meterReadingForCurrentMonthIsRecommended: Boolean!
+
+  meterReadingForPreviousMonthIsRecommended: Boolean!
+
+  currency: String!
+}
+
+type ConsumptionBreakdown {
+  from: String!
+
+  to: String!
+
+  consumption: Float!
+
+  cost: Float!
+
+  isEstimate: Boolean!
+}
+
+type MeterReading {
+  date: String!
+
+  registers: [MeterRegister2]!
+}
+
+type MeterRegister2 {
+  value: Float!
+}
+
+type Comparison {
+  from: String!
+
+  to: String!
+
+  resolution: Resolution!
+
+  homeEfficiency: String!
+
+  homeEfficiencyDescription: String!
+
+  home: ComparisonData!
+
+  average: ComparisonData!
+
+  efficient: ComparisonData!
+
+  year: Int @deprecated(reason: "Moved to from 2019.11.11")
+
+  month: Int @deprecated(reason: "Moved to from 2019.11.11")
+
+  homeEfficency: String! @deprecated(reason: "Typo. Moved to homeEfficiency 2022-01-11.")
+
+  homeEfficencyDescription: String! @deprecated(reason: "Typo. Moved to homeEfficiency 2022-01-11.")
+}
+
+type ComparisonData {
+  cost: Float!
+
+  consumption: Float!
+}
+
+type HomeProfileQuestion {
+  id: Int
+
+  title: String
+
+  text: String
+
+  category: String
+
+  isAnswered: Boolean
+
+  propertyName: String
+
+  valueType: String
+
+  valueIsArray: Boolean
+
+  currentValue: DynamicType
+
+  currentValueText: String
+
+  input: HomeProfileQuestionInput
+}
+
+type HomeProfileQuestionInput {
+  type: String
+
+  options: DynamicType
+}
+
+type SignupStatus {
+  feedStep: ProcessStep
+
+  avatarStep: ProcessStep
+
+  steps: [ProcessStep]
+}
+
+type ProcessStep {
+  timestamp: String
+
+  isComplete: Boolean
+
+  title: String
+
+  description: String
+}
+
+type EnergyCostDisaggregation {
+  from: String!
+
+  to: String!
+
+  title: String!
+
+  description: String
+
+  total: Float!
+
+  totalTitle: String!
+
+  totalDescription: String
+
+  items: [EnergyCostDisaggregationItem!]!
+
+  year: Int @deprecated(reason: "Moved to from 2019.11.11")
+
+  month: Int @deprecated(reason: "Moved to from 2019.11.11")
+
+  currency: String @deprecated(reason: "Deprecated 2019.11.11")
+}
+
+type EnergyCostDisaggregationItem {
+  type: EnergyCostDisaggregationType!
+
+  consumption: Float!
+
+  cost: Float!
+
+  title: String!
+
+  description: String!
+
+  percent: Int!
+
+  strokeColor: String!
+
+  icon: String!
+
+  iconUrl: String!
+}
+
+enum EnergyCostDisaggregationType {
+  behavior
+
+  always_on
+
+  heating
+
+  home_profiled
+
+  electric_vehicles
+}
+
+type Weather {
+  minTemperature: Float
+
+  maxTemperature: Float
+
+  entries: [WeatherEntry]
+}
+
+type WeatherEntry {
+  time: String!
+
+  temperature: Float
+
+  type: String
+
+  fog: Float
+
+  """
+  mm
+  """
+  precipitation: Float
+
+  """
+  percent (0 - 100)
+  """
+  cloudiness: Float
+
+  """
+  meter per second
+  """
+  windSpeed: Float
+
+  """
+  meter per second
+  """
+  windGust: Float
+}
+
+type AwayMode {
+  isSupported: Boolean
+
+  settings: AwayModeSettings
+}
+
+type AwayModeSettings {
+  from: String
+
+  to: String
+}
+
+type ReportRoot {
+  reports: [Report]
+}
+
+type Report {
+  avatar: String
+
+  title: String
+
+  efficiency: String
+
+  year: Int
+
+  month: Int
+
+  items: [ReportCell]
+}
+
+type ReportCell {
+  type: String
+
+  style: String
+
+  imageSrc: String
+
+  title: String
+
+  description: String
+
+  unitText: String
+
+  link: String
+
+  properties: DynamicType
+}
+
+type Analysis {
+  shouldDisplayPageTitles: Boolean!
+
+  pages: [AnalysisPage!]!
+}
+
+type AnalysisPage {
+  title: String!
+
+  items: [AnalysisPageItem!]!
+}
+
+type AnalysisPageItem {
+  type: String!
+
+  subType: String!
+
+  title: String!
+
+  description: String
+
+  callToAction: CallToAction
+
+  period: AnalysisPageItemPeriodData
+}
+
+type AnalysisPageItemPeriodData {
+  from: String!
+
+  to: String!
+
+  resolution: Resolution!
+}
+
+type Thermostat {
+  id: String
+
+  name: String
+
+  brandName: String
+
+  connectivity: String
+
+  state: ThermostatState
+
+  measurements: ThermostatMeasurements @deprecated(reason: "Moved to temperature and setpoint sensor.")
+
+  capabilities: [ThermostatCapability]
+
+  modes: [ThermostatMode]
+
+  template: String
+
+  hasSettings: Boolean @deprecated(reason: "Deprecated")
+
+  supportsDayNightSchedule: Boolean @deprecated(reason: "Moved to schedule")
+
+  supportsAwayMode: Boolean
+
+  schedule: DayNightSchedule
+
+  temperatureSensor: Sensor
+
+  setPointSensor: Sensor
+
+  faqUrl: String
+}
+
+type ThermostatState {
+  mode: String
+
+  comfortTemperature: Float
+
+  fanLevel: String
+
+  onOff: String
+}
+
+type ThermostatMeasurements {
+  temperature: Float
+
+  timestamp: String
+
+  display: [ThermostatMeasurement]
+}
+
+type ThermostatMeasurement {
+  label: String
+
+  description: String
+
+  descriptionLong: String
+
+  value: Float
+
+  valueText: String
+
+  unit: String
+
+  unitText: String
+
+  timestamp: String
+
+  type: String
+
+  typeText: String
+}
+
+type ThermostatCapability {
+  name: String
+
+  type: String
+
+  values: DynamicType
+}
+
+type ThermostatMode {
+  name: String
+
+  capabilities: [String]
+}
+
+type DayNightSchedule {
+  isSupported: Boolean
+
+  day: DayNightScheduleSettings
+
+  night: DayNightScheduleSettings
+
+  enablePriceOptimization: Boolean
+
+  comfortWeight: Int
+}
+
+type DayNightScheduleSettings {
+  isEnabled: Boolean
+
+  localTimeFrom: String
+
+  localTimeTo: String
+
+  recurringDays: [WeekDay]
+}
+
+scalar WeekDay
+
+type Sensor {
+  id: String
+
+  idDeprecated: String @deprecated(reason: "Deprecated")
+
+  hasHistory: Boolean
+
+  measurement: ThermostatMeasurement
+}
+
+type ElectricVehicle {
+  id: String
+
+  name: String
+
+  shortName: String
+
+  lastSeen: String
+
+  lastSeenText: String
+
+  isAlive: Boolean
+
+  imgUrl: String
+
+  schedule: ElectricVehicleSchedule
+
+  battery: ElectricVehicleBattery
+
+  batteryText: String
+
+  chargingText: String
+
+  consumptionText: String
+
+  consumptionUnitText: String
+
+  energyCostUnitText: String
+
+  chargeRightAwayButton: String
+
+  chargeRightAwayAlert: Alert
+
+  scheduleSuspendedText: String @deprecated(reason: "Moved to settingsScreen.scheduleSuspendedText 2019-31-05")
+
+  backgroundStyle: ElectricVehicleBackgroundStyle
+
+  energyDealCallToAction: CallToAction
+
+  faqUrl: String
+
+  smartChargingRealTimeAnalytics: SmartChargingRealTimeAnalytics
+
+  settingsScreen: ElectricVehicleSettingsScreen
+
+  settingsButtonText: String
+
+  enterPincode: Boolean
+}
+
+type ElectricVehicleSchedule {
+  isSupported: Boolean @deprecated(reason: "Deprecated, not used anymore")
+
+  isEnabled: Boolean
+
+  isSuspended: Boolean
+
+  localTimeTo: String
+
+  minBatteryLevel: Int
+}
+
+type ElectricVehicleBattery {
+  percent: Int
+
+  percentColor: String
+
+  timestamp: String @deprecated(reason: "Duplication of lastSeen 2019-31-01")
+
+  isCharging: Boolean
+
+  chargeLimit: Int
+}
+
+type Alert {
+  imgUrl: String
+
+  title: String
+
+  message: String @deprecated(reason: "Moved to description")
+
+  description: String
+
+  okText: String
+
+  cancelText: String
+}
+
+enum ElectricVehicleBackgroundStyle {
+  default
+
+  inactive
+
+  saving
+}
+
+type SmartChargingRealTimeAnalytics {
+  chargingPeriods: [chargingPeriod]
+
+  totalConsumedEnergyInSchedule: Int
+
+  price: Float
+
+  averageChargerPower: Int
+}
+
+type chargingPeriod {
+  fromTime: String
+
+  toTime: String
+
+  chargingPower: Float
+
+  energyConsumedAtEnd: Float
+
+  stateOfChargeAtStart: Int
+
+  targetStateOfChargeReachedAtEnd: Float
+
+  totalPriceForPeriod: Float
+}
+
+type ElectricVehicleSettingsScreen {
+  settings: [Setting]
+
+  settingsLayout: [SettingLayoutItem]
+
+  openButtonText: String @deprecated(reason: "Moved to scheduleButtonText 2019-31-05")
+
+  siteTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  description: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleDisableAlert: ElectricVehicleDisableScheduleAlert @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleSuspendedText: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  hourTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  minBatteryLevelTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  minBatteryLevelIsSupported: Boolean @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  chargingCableNotConnectedTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  chargingCableNotConnectedEnabled: Boolean @deprecated(reason: "Deprecated with introduction of settingsLayout")
+}
+
+type ElectricVehicleDisableScheduleAlert {
+  title: String
+
+  description: String
+
+  disableText: String
+
+  suspendText: String
+
+  cancelText: String
+}
+
+input QueryInputArguments {
+  key: String!
+
+  value: String
+}
+
+type EvCharger {
+  id: String
+
+  name: String
+
+  shortName: String
+
+  lastSeen: String
+
+  isAlive: Boolean
+
+  backgroundStyle: ElectricVehicleBackgroundStyle
+
+  img: String
+
+  imgUrl: String
+
+  state: EvChargerState
+
+  settings: EvChargerSettings @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  schedule: EvChargerSchedule @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  mainScreen: EvChargerMainScreen
+
+  settingsScreen: EvChargerSettingsScreen
+}
+
+type EvChargerState {
+  cableIsLocked: Boolean
+
+  isCharging: Boolean
+
+  permanentCableLock: Boolean
+}
+
+type EvChargerSettings {
+  name: String
+
+  caseName: String
+
+  maxChargePower: Int
+
+  permanentCableLock: Boolean
+
+  loadBalanceMainFuse: Boolean
+
+  loadBalanceAdditionalEvChargers: Boolean
+}
+
+type EvChargerSchedule {
+  isSupported: Boolean
+
+  isEnabled: Boolean
+
+  isSuspended: Boolean
+
+  localTimeTo: String
+}
+
+type EvChargerMainScreen {
+  siteTitle: String
+
+  title: String
+
+  description: String
+
+  imgUrl: String
+
+  startChargingButton: Button
+
+  startChargingAlert: Alert
+
+  consumptionText: String
+
+  consumptionUnitText: String
+
+  energyCostUnitText: String
+
+  settingsButton: Button
+}
+
+type Button {
+  text: String
+
+  icon: String
+
+  iconUrl: String
+
+  enabled: Boolean
+
+  backgroundColor: String
+}
+
+type EvChargerSettingsScreen {
+  settings: [Setting]
+
+  settingsLayout: [SettingLayoutItem]
+
+  siteTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  description: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  nameTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleDisableAlert: ElectricVehicleDisableScheduleAlert @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleEnableAlert: CallToActionAlert @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  scheduleSuspendedText: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  hourTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  maxChargePowerTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  maxChargePowerRange: IntRange @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  maxChargePowerRates: IntInputValue @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  permanentCableLockTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  loadBalanceMainFuseTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  loadBalanceMainFuseEnabled: Boolean @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  loadBalanceMainFuseOn: Boolean @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  cases: [EvChargerCase] @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  energyDealCallToAction: CallToAction @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  myVehiclesTitle: String @deprecated(reason: "Deprecated with introduction of settingsLayout")
+
+  myVehiclesCount: Int @deprecated(reason: "Deprecated with introduction of settingsLayout")
+}
+
+type CallToActionAlert {
+  title: String
+
+  message: String
+
+  cancelText: String
+
+  callToAction: CallToAction
+}
+
+type IntRange {
+  min: Int
+
+  max: Int
+
+  step: Int
+
+  defaultValue: Int
+}
+
+type IntInputValue {
+  values: [Int]
+
+  unit: String
+}
+
+type EvChargerCase {
+  name: String
+
+  color: String
+
+  imgUrl: String
+}
+
+type EvChargerPairConfig {
+  wifiScanResult: [WifiScanRecord]
+
+  pairedEvs: [PairedEv]
+
+  supportedEvs: [EvBrand]
+
+  error: ErrorResponse
+}
+
+type WifiScanRecord {
+  ssid: String
+
+  rssi: Float
+
+  open: Boolean
+}
+
+type PairedEv {
+  id: String
+
+  name: String
+
+  imgUrl: String
+}
+
+type EvBrand {
+  brand: String
+
+  imgUrl: String
+
+  models: [EvBrandModel]
+}
+
+type EvBrandModel {
+  id: String
+
+  name: String
+}
+
+type ErrorResponse {
+  statusCode: Int!
+
+  title: String!
+
+  message: String!
+}
+
+type ElectricVehicleConsumptionMonth {
+  year: Int
+
+  month: Int
+
+  title: String
+
+  description: String
+
+  consumption: Float
+
+  consumptionText: String
+
+  energyCost: Float
+
+  energyCostText: String
+
+  currency: String
+}
+
+type ElectricVehicleConsumptionValue {
+  from: String
+
+  consumption: Float
+
+  energyCost: Float
+}
+
+type SensorHistory {
+  sensorId: String
+
+  description: String
+
+  values: [SensorHistoryValue]
+}
+
+type SensorHistoryValue {
+  timestamp: String
+
+  value: Float
+
+  valueText: String
+}
+
+type EnergyDeal {
+  signupStatus: EnergyDealSignupStatus
+
+  currentProducer: Producer @deprecated(reason: "2021-10-15 - Use producerPreferences instead.")
+
+  producerPreferences: ProducerPreferences
+}
+
+type EnergyDealSignupStatus {
+  status: String
+
+  title: String
+
+  completedPct: Int
+
+  link: String
+
+  url: String
+
+  redirectUrlStartsWith: String
+}
+
+type Producer {
+  id: String!
+
+  name: String!
+
+  title: String!
+
+  description: String!
+
+  imageSrc: String
+
+  iconSrc: String!
+
+  readMoreUrl: String
+
+  readMoreText: String
+
+  isRecommended: Boolean!
+
+  swapTitle: String!
+
+  swapDescription: String!
+
+  bullets: [ProducerBullet!]!
+}
+
+type ProducerBullet {
+  title: String!
+
+  subTitle: String!
+
+  description: String
+
+  readMoreUrl: String
+
+  iconName: String!
+
+  iconUrl: String!
+}
+
+type ProducerPreferences {
+  currentOptionId: String!
+
+  upcomingOption: UpcomingProducerPreference
+
+  swapReadMoreUrl: String
+
+  options: [Producer!]!
+}
+
+type UpcomingProducerPreference {
+  id: String!
+
+  from: String!
+}
+
+type Powerup {
+  title: String
+
+  description: String
+
+  inviteCallToAction: CallToAction
+
+  faqUrl: String
+
+  items: [PowerupItem]
+}
+
+type PowerupItem {
+  type: String
+
+  style: String
+
+  title: String
+
+  description: String
+
+  imgUrl: String
+
+  secondaryImgUrl: String @deprecated(reason: "Deprecated 2019-02-26")
+
+  backgroundColor: String
+
+  backgroundImgUrl: String
+
+  url: String
+
+  link: String
+
+  isBeta: Boolean
+
+  pairableDevice: PairableDevice
+}
+
+type PairableDevice {
+  deviceType: String!
+
+  isRecommended: Boolean!
+
+  isPaired: Boolean!
+
+  isPairable: Boolean!
+
+  canPairMultiple: Boolean!
+
+  disconnectable: Boolean!
+
+  pairedDevices: [PairableDevicePairDevice]
+
+  oauth: PairableDeviceOAuth
+
+  credentials: PairableDeviceCredentials
+
+  title: String!
+
+  description: String
+
+  recommendedText: String
+
+  readmoreButtonText: String
+
+  readmoreLinkText: String @deprecated(reason: "unused")
+
+  pairButtonText: String!
+
+  unpairButtonText: String!
+
+  helpArticle: ArticleItem
+
+  showHomeSelector: Boolean!
+
+  settings: [Setting!]!
+
+  settingsLayout: [SettingLayoutItem!]!
+
+  showcaseTitle: String
+
+  featuresTitle: String
+
+  featuresDescription: String
+
+  readMoreUrl: String
+
+  logoImgUrl: String
+
+  showcaseImgUrls: [String]
+
+  features: [PairableDeviceFeature]
+}
+
+type PairableDevicePairDevice {
+  deviceId: String
+}
+
+type PairableDeviceOAuth {
+  url: String
+
+  redirectUriStartsWith: String
+}
+
+type PairableDeviceCredentials {
+  description: String
+
+  disclaimerText: String
+
+  disclaimerUrl: String
+
+  imgUrl: String
+}
+
+type PairableDeviceFeature {
+  imgUrl: String
+
+  title: String
+
+  type: String
+
+  valueText: String
+
+  unitText: String
+
+  unit: String
+
+  label: String
+
+  description: String
+}
+
+type Invite {
+  siteTitle: String
+
+  title: String
+
+  description: String
+
+  imgUrl: String
+
+  imgAnimationUrl: String
+
+  bodyTemplate: String
+
+  inviteButtonText: String
+
+  registerInvitorButtonText: String
+
+  energyDealCallToAction: CallToAction
+
+  thankYouTitle: String
+
+  thankYouDescription: String
+
+  tablePlaceholderText: String
+
+  appsFlyerAppInviteOneLinkId: String
+
+  invites: [InviteItem]
+
+  inviteInfoScreen: InviteInfoScreen
+
+  registerInvitorScreen: InviteRegisterScreen
+
+  currency: String!
+
+  earnableBonusAmount: Float!
+}
+
+type InviteItem {
+  name: String
+
+  imgUrl: String
+
+  statusText: String
+
+  creditBalanceText: String
+}
+
+type InviteInfoScreen {
+  siteTitle: String
+
+  title: String
+
+  bullets: [String]
+
+  buttonText: String
+}
+
+type InviteRegisterScreen {
+  siteTitle: String
+
+  title: String
+
+  description: String
+
+  codePlaceholder: String
+
+  buttonText: String
+}
+
+type Pulse {
+  id: String
+
+  name: String
+
+  type: String
+
+  shortName: String
+
+  isAlive: Boolean
+
+  alert: Alert
+
+  hasAccessToNewPulseScreen: Boolean!
+
+  hasAccessToPeakControl: Boolean!
+
+  peakControlStatus: PeakControlStatus!
+
+  estimatedMeasurementsPerMinute: Float
+
+  settings: PulseSettings @deprecated(reason: "Use settings2 instead.")
+
+  settings2: [Setting]
+
+  settingsLayout: [SettingLayoutItem]
+
+  mainScreen: PulseMainScreen
+
+  loadBalancingScreen: PulseLoadBalancingScreen
+
+  loadBalancingSettingsScreen: PulseLoadBalancingSettingsScreen
+
+  energyDealAlert: CallToActionAlert
+}
+
+enum PeakControlStatus {
+  DISABLED
+
+  STANDBY
+
+  ACTIVE
+}
+
+type PulseSettings {
+  mainFuseSize: Int
+
+  loadBalancingOn: Boolean
+}
+
+type PulseMainScreen {
+  tabConsumptionText: String
+
+  tabPhaseText: String
+}
+
+type PulseLoadBalancingScreen {
+  siteTitle: String
+
+  title: String
+
+  description: String
+
+  tabNowText: String
+
+  tabHighestText: String
+
+  mainFuseDangerPercent: Int
+
+  settingsButton: Button
+}
+
+type PulseLoadBalancingSettingsScreen {
+  siteTitle: String
+
+  mainFuseTitle: String
+
+  mainFuseDescription: String
+
+  mainFuseRange: IntRange
+
+  loadBalancingTitle: String
+
+  loadBalancingDescription: String
+
+  loadBalancingEnabled: Boolean
+}
+
+type PulsePairConfig {
+  deviceId: String!
+
+  requiresReset: Boolean
+
+  ssid: String!
+
+  baseUrl: String!
+
+  updateUrl: String
+
+  mqttUrl: String
+
+  mqttTopic: String
+
+  mqttTopicSub: String
+
+  caCert: String
+
+  certificate: String
+
+  privateKey: String
+
+  supportedMeters: [PulseSupportedMeter!]!
+}
+
+type PulseSupportedMeter {
+  brand: String!
+
+  model: String!
+
+  imageUrl: String!
+
+  portImageUrl: String!
+}
+
+type PulsePairStatus {
+  status: String!
+}
+
+type PulseMeasurement {
+  timestamp: String
+
+  power: Float
+
+  powerProduction: Float
+
+  minPower: Float
+
+  minPowerTimestamp: String
+
+  averagePower: Float
+
+  maxPower: Float
+
+  maxPowerTimestamp: String
+
+  minPowerProduction: Float
+
+  maxPowerProduction: Float
+
+  estimatedAccumulatedConsumptionCurrentHour: Float
+
+  accumulatedConsumption: Float
+
+  accumulatedCost: Float
+
+  accumulatedConsumptionCurrentHour: Float
+
+  accumulatedProduction: Float
+
+  accumulatedReward: Float
+
+  accumulatedProductionCurrentHour: Float
+
+  peakControlConsumptionState: PeakControlConsumptionState
+
+  currency: String
+
+  currentPhase1: Float
+
+  currentPhase2: Float
+
+  currentPhase3: Float
+
+  voltagePhase1: Float
+
+  voltagePhase2: Float
+
+  voltagePhase3: Float
+
+  powerFactor: Float
+
+  signalStrength: Int
+}
+
+enum PeakControlConsumptionState {
+  NOMINAL
+
+  ESTIMATE_CLOSE_TO_LIMIT
+
+  ESTIMATE_EXCEEDS_LIMIT
+
+  LIMIT_EXCEEDED
+}
+
+type FuseLoadExcess {
+  history: FuseLoadExcessHistoryType!
+}
+
+type FuseLoadExcessHistoryType {
+  items: [FuseLoadExcessHistoryItemType!]!
+}
+
+type FuseLoadExcessHistoryItemType {
+  startedAt: String!
+
+  endedAt: String
+
+  currentPhase1: Float
+
+  currentPhase2: Float
+
+  currentPhase3: Float
+
+  mainFuseSize: Int
+}
+
+type Inverter {
+  id: String
+
+  lastSeen: String
+
+  siteTitle: String
+
+  bubble: Bubble
+
+  description: String
+
+  firstProductionValueAt: String
+
+  alert: Alert
+}
+
+type InverterProduction {
+  keyFigures: [InverterProductionKeyFigure]
+
+  items: [InverterProductionItem]
+
+  yAxis: YAxis
+}
+
+type InverterProductionKeyFigure {
+  valueText: String
+
+  unitText: String
+
+  description: String
+}
+
+type InverterProductionItem {
+  from: String
+
+  to: String
+
+  fromToText: String
+
+  value: Float
+
+  valueText: String
+}
+
+type Message {
+  id: String
+
+  title: String
+
+  description: String
+
+  iconSrc: String
+
+  callToAction: CallToAction
+
+  dismissButtonText: String
+}
+
+type Lighting {
+  alert: Alert
+
+  bubble: LightingBubble
+
+  texts: LightingTexts
+
+  associatedApp: LightingAssociatedApp
+
+  groups: [LightingGroup]
+
+  lights: [Light]
+}
+
+type LightingBubble {
+  iconSrc: String
+
+  allLightsOffIconSrc: String
+
+  description: String
+}
+
+type LightingTexts {
+  roomsSiteTitle: String
+
+  allLightsOff: String
+
+  allLightsOffline: String
+
+  allLightsOn: String
+
+  someLightsOn: String
+}
+
+type LightingAssociatedApp {
+  description: String
+
+  buttonText: String
+
+  appLinks: [AppLink]
+}
+
+type AppLink {
+  name: String
+
+  url: String
+
+  iconSrc: String
+}
+
+type LightingGroup {
+  id: String
+
+  name: String
+
+  iconSrc: String
+
+  lightIds: [String]
+}
+
+type Light {
+  id: String
+
+  name: String
+
+  description: String
+
+  isAlive: Boolean
+
+  supportsAdjustingBrightness: Boolean
+
+  supportedColorModes: [String]
+
+  iconSrc: String
+
+  state: LightState
+}
+
+type LightState {
+  on: Boolean
+
+  isOn: Boolean
+
+  brightness: Float
+
+  color: String
+
+  colorMode: String
+
+  kelvin: Int
+}
+
+type HomeScreenBubble {
+  type: String
+
+  id: String
+
+  isHidden: Boolean
+
+  respectOfflineState: Boolean
+
+  context: [QueryArguments]
+}
+
+type QueryArguments {
+  key: String!
+
+  value: String
+}
+
+type EnergySavingsAnalysisItem {
+  from: String!
+
+  to: String!
+
+  consumption: Float!
+
+  forecast: Float!
+}
+
+type Wallet {
+  id: String!
+
+  paymentMethods: [PaymentMethodDeprecated]!
+
+  directDebitToPromote: String
+}
+
+type PaymentMethodDeprecated {
+  method: String!
+
+  status: String!
+
+  properties: DynamicType
+}
+
+type ElectricVehicleConsumption {
+  currency: String
+
+  homes: [ElectricVehicleHomeConsumption]
+}
+
+type ElectricVehicleHomeConsumption {
+  homeId: String
+
+  values: [ElectricVehicleConsumptionValue]
+}
+
+type SubscribableNotificationCategory {
+  groups: [NotificationCategory!]!
+
+  notifications: [Notification!]!
+}
+
+type NotificationCategory {
+  id: String!
+
+  name: String!
+
+  imageUrl: String!
+}
+
+type Notification {
+  id: String!
+
+  title: String!
+
+  description: String!
+
+  group: String!
+
+  subscribed: Boolean!
+}
+
+type SubscribableNotification {
+  id: String!
+
+  title: String!
+
+  description: String!
+
+  category: String!
+
+  channels: [NotificationChannel!]!
+}
+
+type NotificationChannel {
+  channelType: String!
+
+  subscribing: Boolean!
+}
+
+type PushNotification {
+  id: String!
+
+  message: String!
+
+  sendTime: String!
+
+  isRead: Boolean!
+
+  link: String
+}
+
+type Account {
+  siteTitle: String
+
+  items: [AccountItem]
+}
+
+type AccountItem {
+  title: String
+
+  titleColor: String
+
+  subTitle: String
+
+  subTitleColor: String
+
+  icon: String
+
+  iconUrl: String
+
+  callToAction: CallToAction
+}
+
+type Vehicle {
+  id: String
+
+  type: String
+
+  name: String
+
+  imageUrl: String
+
+  isAlive: Boolean
+
+  isChargingPaused: Boolean
+
+  isCharging: Boolean
+
+  isAccessDenied: Boolean
+
+  isMobileAccessDisabled: Boolean
+
+  isLocationSupported: Boolean
+
+  isLocationEnabled: Boolean
+
+  isSmartChargingEnabled: Boolean
+
+  isSmartChargingSuspended: Boolean
+
+  isBatteryFull: Boolean
+
+  isHome: Boolean
+
+  lastSeen: String
+
+  brand: String
+
+  model: String
+
+  battery: Battery
+
+  charging: ChargingType
+
+  consumption: ElectricVehicleConsumptionValueFormatted
+
+  userSettings: [Setting]
+
+  settingsScreen: [SettingLayoutItem]
+
+  location: LocationType
+
+  status: VehicleStatus
+
+  actionButton: ActionButton
+}
+
+type Battery {
+  level: Int
+
+  estimatedRange: Int
+
+  capacity: Float
+}
+
+type ChargingType {
+  text: String
+
+  departureTimes: [DepartureTimeType]
+
+  schedule: VehicleChargingPlan
+
+  reason: String
+
+  currentStoppedBy: String
+
+  currentLimitedBy: String
+}
+
+type DepartureTimeType {
+  day: WeekdayEnum
+
+  time: String
+}
+
+enum WeekdayEnum {
+  sunday
+
+  monday
+
+  tuesday
+
+  wednesday
+
+  thursday
+
+  friday
+
+  saturday
+}
+
+type VehicleChargingPlan {
+  reason: String
+
+  schedule: [ChargingPeriodType]
+
+  schedule_type: String
+}
+
+type ChargingPeriodType {
+  timestamp: String
+
+  charge_kW: Float
+
+  charge_kWh: Float
+
+  price: Float
+
+  batt_level: Float
+}
+
+type ElectricVehicleConsumptionValueFormatted {
+  from: String!
+
+  consumption: String!
+
+  energyCost: String!
+}
+
+type LocationType {
+  isSupported: Boolean
+
+  isEnabled: Boolean
+
+  homeId: String
+}
+
+type VehicleStatus {
+  title: String!
+
+  description: String!
+
+  imgUrl: String!
+}
+
+type ActionButton {
+  text: String!
+
+  callToAction: CallToAction
+
+  enabled: Boolean!
+}
+
+type MyVehicles {
+  vehicles: [MyVehicle]
+
+  mainScreen: MyVehiclesMainScreen
+
+  addScreen: MyVehiclesAddScreen
+}
+
+type MyVehicle {
+  id: String
+
+  title: String
+
+  description: String
+
+  imgUrl: String
+
+  detailsScreen: VehicleDetailsScreen
+}
+
+type VehicleDetailsScreen {
+  siteTitle: String
+
+  settings: [Setting]
+
+  settingsLayout: [SettingLayoutItem]
+
+  removeButton: Button
+
+  removeAlert: Alert
+}
+
+type MyVehiclesMainScreen {
+  siteTitle: String
+
+  description: String
+
+  addButton: Button
+
+  emptyState: EmptyState
+}
+
+type EmptyState {
+  title: String
+
+  description: String
+
+  imgUrl: String
+}
+
+type MyVehiclesAddScreen {
+  title: String
+
+  brandTitle: String
+
+  modelTitle: String
+
+  brands: [VehicleBrand]
+
+  addAlert: Alert
+}
+
+type VehicleBrand {
+  name: String
+
+  description: String
+
+  imgUrl: String
+
+  models: [VehicleModel]
+
+  isPairable: Boolean
+
+  pairingScreen: VehiclePairingScreen
+}
+
+type VehicleModel {
+  id: String
+
+  name: String
+
+  title: String
+
+  description: String
+
+  imgUrl: String
+}
+
+type VehiclePairingScreen {
+  siteTitle: String
+
+  deviceType: String
+
+  oauth: PairableDeviceOAuth
+
+  credentials: PairableDeviceCredentials
+}
+
+type PaymentMethods {
+  siteTitle: String
+
+  title: String
+
+  description: String
+
+  items: [PaymentMethodItem]
+}
+
+type PaymentMethodItem {
+  type: String
+
+  title: String
+
+  description: String
+
+  paymentMethod: PaymentMethod
+}
+
+type PaymentMethod {
+  id: String
+
+  imgUrl: String
+
+  description: String
+
+  homeAddresses: [String]
+
+  statusText: String
+
+  statusTextColor: String
+
+  callToAction: CallToAction
+
+  settings: [Setting]
+
+  settingsLayout: [SettingLayoutItem]
+}
+
+type Meters {
+  readingTutorial: MeterReadingTutorial
+
+  items: [MeterItem!]
+}
+
+type MeterReadingTutorial {
+  multipleRegisters: MeterReadingTutorialMultipleRegisters
+}
+
+type MeterReadingTutorialMultipleRegisters {
+  bulletsTitle: String
+
+  description: String
+
+  bullets: [MeterReadingTutorialBullet!]
+
+  nextButtonText: String
+}
+
+type MeterReadingTutorialBullet {
+  bulletText: String!
+
+  text: String!
+}
+
+type MeterItem {
+  type: String
+
+  title: String
+
+  description: String
+
+  meter: Meter
+}
+
+type Meter {
+  id: String
+
+  title: String
+
+  description: String
+
+  imgUrl: String
+
+  readingDateScreen: MeterReadingDateScreen
+
+  registers: [MeterRegister!]
+
+  settings: [Setting!]
+
+  settingsLayout: [SettingLayoutItem!]
+}
+
+type MeterReadingDateScreen {
+  title: String
+
+  description: String
+
+  minDate: String
+
+  minDateTitle: String
+
+  minDateDescription: String
+
+  selectedDateDescription: String
+
+  nextButtonText: String
+
+  minDateHtmlText: String @deprecated(reason: "Replaced by minDateTitle & minDateDescription")
+}
+
+type MeterRegister {
+  id: String
+
+  title: String
+
+  description: String
+
+  previousReadingText: String
+
+  nextButtonText: String
+
+  expectedMin: Float
+
+  expectedMax: Float
+
+  greaterThanExpectedMaxHtmlText: String
+
+  lessThanExpectedMinHtmlText: String
+
+  withinExpectedMinMaxHtmlText: String
+}
+
+type DeletionStatus {
+  canBeDeleted: Boolean
+
+  reason: String
+}
+
+type PreOnboarding {
+  isEnabled: Boolean!
+
+  url: String!
+
+  redirectUrlStartsWith: String!
+}
+
+type AssignmentPowerUpType {
+  title: String!
+
+  description: String!
+
+  longDescription: String!
+
+  connected: Boolean!
+
+  storeUrl: String!
+
+  imageUrl: String!
+}
+
+type Mutation {
+  me: MeMutation
+}
+
+type MeMutation {
+  update(settings: [SettingsItemInput]): Me
+
+  home(id: String): HomeMutation
+
+  updateAppState(state: AppStateMutation): GQLMutationGeneralResponse
+
+  registerInvitor(invitorCustomerId: String, timestamp: String): GQLMutationGeneralResponse
+
+  registerInvitorWithCode(code: String): GQLMutationGeneralResponse
+
+  addDeviceToken(token: String): GQLMutationGeneralResponse
+
+  removeDeviceToken(token: String): GQLMutationGeneralResponse
+
+  subscribeForNotification(notificationId: String, channel: String): GQLMutationGeneralResponse
+
+  unsubscribeForNotification(notificationId: String, channel: String): GQLMutationGeneralResponse
+
+  setPushNotificationsAsRead(ids: [String]): GQLMutationGeneralResponse
+
+  addVehicle(modelId: String): AddVehicleResult
+
+  removeVehicle(id: String): AddVehicleResult
+
+  updateVehicle(id: String, settings: [SettingsItemInput]): AddVehicleResult
+
+  updatePaymentMethodSettings(id: String, settings: [SettingsItemInput]): UpdatePaymentMethodResult
+
+  addMeterReadings(meterId: String, readingDate: String, readings: [AddMeterReading]): AddMeterReadingResult
+
+  delete(customerIdVerification: String!): DeleteCustomerResult
+}
+
+input SettingsItemInput {
+  key: String!
+
+  value: SettingsItemInputValue
+}
+
+scalar SettingsItemInputValue
+
+type HomeMutation {
+  updateSettings(settings: [SettingsItemInput]): UpdateHomeSettingsResult
+
+  thermostat(id: String): ThermostatMutation
+
+  electricVehicle(id: String): ElectricVehicleMutation
+
+  evCharger(id: String): EvChargerMutation
+
+  setLightsState(lights: [LightUpdate]): GQLMutationGeneralResponse
+
+  pulse(id: String): PulseMutation
+
+  pairDeviceWithOAuth(deviceType: String, authorizationCode: String, redirectUrl: String): PairDeviceResult
+
+  pairDeviceWithCredentials(deviceType: String, username: String, password: String): PairDeviceResult
+
+  unpairDevices(deviceIds: [String]): GQLMutationGeneralResponse
+
+  discoverDevices(deviceType: String): DiscoverDevicesResult
+
+  moveDevices(settings: [SettingsItemInput]): MoveDevicesResult
+
+  answerProfileQuestions(answers: [HomeProfileQuestionAnswer]): [HomeProfileQuestion]
+
+  setMeteringPointIdAndBindingTime(meteringPointId: String, bindingTime: String, isMovingIn: Boolean): GQLMutationGeneralResponse
+
+  setAwayMode(isEnabled: Boolean, from: String, to: String): GQLMutationGeneralResponse
+
+  dismissMessage(id: String): [Message]
+
+  setBubblesSortOrder(bubbleIds: [String]): GQLMutationGeneralResponse
+
+  setBubbleVisibility(bubbleId: String, isHidden: Boolean): GQLMutationGeneralResponse
+
+  setProducerPreference(optionId: String!): SetProducerPreferenceResult
+
+  sendStatusCommand(deviceId: String!): Void
+
+  sendStartJoinCommand(deviceId: String!): Void
+}
+
+type UpdateHomeSettingsResult {
+  id: ID!
+
+  avatar: Avatar! @deprecated(reason: "Moved to settings. 2020-10-06")
+
+  timeZone: String!
+
+  title: String @deprecated(reason: "Moved to settings. 2020-10-06")
+
+  type: String! @deprecated(reason: "Moved to settings. 2020-10-06")
+
+  hasEnergyDeal: Boolean! @deprecated(reason: "Moved to hasSignedEnergyDeal. 2022-08-17.")
+
+  hasSignedEnergyDeal: Boolean!
+
+  hasConsumption: Boolean!
+
+  manualMeterReadingIsSupported: Boolean @deprecated(reason: "2021-11-17. Use currentMeter.isUserRead instead")
+
+  currentSettlementMethod: SettlementMethod @deprecated(reason: "Removed. 2020-10-06")
+
+  meteringPointIdFormatted: String
+
+  currentMeterNoFormatted: String @deprecated(reason: "2021-11-17. Use currentMeter.meterNo instead")
+
+  currentMeter: CurrentMeter
+
+  settings: [Setting]!
+
+  settingsLayout: [SettingLayoutItem]!
+
+  address: Address!
+
+  hasSmartMeterCapabilities: Boolean!
+
+  showMeterNo: Boolean!
+
+  showMeteringPointId: Boolean!
+}
+
+type ThermostatMutation {
+  setState(mode: String, comfortTemperature: Float, fanLevel: String, onOff: String): Boolean
+
+  setName(name: String): Boolean
+
+  setSchedule(day: DayNightScheduleSettingsInput!, night: DayNightScheduleSettingsInput!, enablePriceOptimization: Boolean!, comfortWeight: Int!): GQLMutationGeneralResponse
+}
+
+type GQLMutationGeneralResponse {
+  error: ErrorResponse
+}
+
+input DayNightScheduleSettingsInput {
+  isEnabled: Boolean!
+
+  localTimeFrom: String!
+
+  localTimeTo: String!
+
+  recurringDays: [WeekDay]!
+}
+
+type ElectricVehicleMutation {
+  setSchedule(isEnabled: Boolean, isSuspended: Boolean, localTimeTo: String, minBatteryLevel: Int): ElectricVehicle
+
+  setSettings(pincode: String, settings: [SettingsItemInput]): ElectricVehicle
+}
+
+type EvChargerMutation {
+  setSettings(name: String, caseName: String, maxChargePower: Float, permanentCableLock: Boolean, settings: [SettingsItemInput]): EvCharger
+
+  setSchedule(isEnabled: Boolean, isSuspended: Boolean, localTimeTo: String): EvCharger @deprecated(reason: "Replaced by setSettings")
+
+  setCharging(isCharging: Boolean): EvCharger
+}
+
+input LightUpdate {
+  id: String
+
+  state: LightStateUpdate
+}
+
+input LightStateUpdate {
+  on: Boolean
+
+  isOn: Boolean
+
+  brightness: Float
+
+  color: String
+
+  colorMode: String
+
+  kelvin: Int
+}
+
+type PulseMutation {
+  setSettings(mainFuseSize: Int, loadBalancingOn: Boolean, settings: [SettingsItemInput]): Pulse
+
+  finalizePulseInfraredPairing(bridgeDeviceId: String!): Void
+}
+
+"""
+Represents NULL values
+"""
+scalar Void
+
+type PairDeviceResult {
+  title: String
+
+  description: String
+
+  thermostats: [Thermostat]
+
+  sensors: [Sensor]
+
+  electricVehicles: [ElectricVehicle]
+
+  evChargers: [EvCharger]
+
+  inverters: [Inverter]
+
+  lighting: Lighting
+
+  error: ErrorResponse
+}
+
+type DiscoverDevicesResult {
+  settings: [Setting!]!
+
+  settingsLayout: [SettingLayoutItem!]!
+
+  discoveryLedToChanges: Boolean
+
+  error: ErrorResponse
+}
+
+type MoveDevicesResult {
+  settings: [Setting!]!
+
+  settingsLayout: [SettingLayoutItem!]!
+
+  error: ErrorResponse
+}
+
+input HomeProfileQuestionAnswer {
+  propertyName: String
+
+  value: ProfileQuestionInput
+}
+
+scalar ProfileQuestionInput
+
+type SetProducerPreferenceResult {
+  producerPreferences: ProducerPreferences
+
+  error: ErrorResponse
+}
+
+input AppStateMutation {
+  journey: AppStateJourneyMutation
+
+  frontScreens: [AppStateFronScreenMutation]
+}
+
+input AppStateJourneyMutation {
+  hasVisitedPairDevices: Boolean
+
+  hasVisitedDeviceList: Boolean
+}
+
+input AppStateFronScreenMutation {
+  homeId: String
+
+  bubbles: [String]
+
+  bubblesSortOrder: [String]
+}
+
+type AddVehicleResult {
+  vehicles: [MyVehicle]
+
+  error: ErrorResponse
+}
+
+type UpdatePaymentMethodResult {
+  paymentMethods: PaymentMethods
+
+  error: ErrorResponse
+}
+
+type AddMeterReadingResult {
+  success: AddMeterReadingSuccessScreen
+
+  error: ErrorResponse
+}
+
+type AddMeterReadingSuccessScreen {
+  inputTitle: String
+
+  inputValue: Float
+
+  title: String
+
+  descriptionHtml: String
+
+  doneButtonText: String
+
+  callToActions: [CallToAction]
+}
+
+input AddMeterReading {
+  id: String!
+
+  value: Float!
+}
+
+type DeleteCustomerResult {
+  customerId: String
+
+  isDeletedAccepted: Boolean
+
+  reason: String
+
+  requestedBy: RequestedBy
+
+  error: ErrorResponse
+}
+
+type RequestedBy {
+  id: String!
+
+  email: String!
+}
+
+type ClientSubscription {
+  bridgeMessages(deviceId: String): BridgeMessageType
+
+  liveMeasurement(deviceId: String): PulseMeasurement
+
+  evChargerState(chargerId: String): EvCharger
+}
+
+union BridgeMessageType = BridgeUnknownMessageType|BridgeStatusDetailType|BridgeEventDetailType|BridgePulseInfraredDataDetailType
+
+type BridgeUnknownMessageType {
+  rawData: String
+}
+
+type BridgeStatusDetailType {
+  ssid: String!
+
+  rssi: Int!
+
+  mqttcon: Int!
+
+  wificon: Int!
+
+  id: String!
+
+  uptime: String!
+
+  efr_uptime: String!
+
+  vcc: Float!
+
+  vacrms: Float!
+
+  heap: Int!
+
+  coredump_available: Boolean!
+
+  model: BridgeModelType!
+
+  esp_version: String!
+
+  efr_version: String!
+
+  nodes: [BridgeNodeType!]!
+
+  ota: [BridgeOtaInfoType!]
+
+  hub_ota_status: String!
+
+  manifest_state: String!
+
+  netflags: Int!
+
+  ip: String!
+
+  gateway: String!
+
+  dns0: String!
+
+  dns1: String!
+
+  dns2: String!
+}
+
+enum BridgeModelType {
+  TJH01
+
+  TFD01
+}
+
+type BridgeNodeType {
+  id: Int!
+
+  eui: String!
+
+  model: BridgeModelType!
+
+  version: String!
+
+  rssi: Float!
+
+  seen: Int!
+
+  available: Boolean!
+
+  pubcnt: Int!
+
+  ota_state: String!
+
+  ota_status: String!
+
+  manifest_version: String!
+
+  up2date: Boolean!
+}
+
+type BridgeOtaInfoType {
+  model: String!
+
+  manifest_version: String!
+
+  state: String!
+
+  current_version: String
+}
+
+type BridgeEventDetailType {
+  name: BridgeEventNameType!
+
+  args: BridgeEventDetailArgsType
+
+  metrics: BridgeEventDetailMetricsType
+}
+
+enum BridgeEventNameType {
+  HUB_EVENT_GOT_PAIR_REQUEST
+
+  HUB_EVENT_GOT_ADVERTICE_REQUEST
+
+  HUB_EVENT_GOT_HANDSHAKE
+
+  HUB_EVENT_NODE_ADDED
+
+  HUB_EVENT_NODE_REMOVED
+
+  HUB_EVENT_PAIRING_MODE
+
+  HUB_EVENT_MQTT_SUBSCRIBE
+
+  HUB_EVENT_OTA_MANIFEST_SYNCHRONIZED
+
+  HUB_EVENT_OTA_STARTED
+
+  HUB_EVENT_OTA_STOPPED
+
+  HUB_EVENT_OTA_STATE_CHANGED
+
+  HUB_EVENT_OTA_HUB_STATUS
+
+  HUB_EVENT_NODE_AVAILABLE
+
+  HUB_EVENT_NODE_UNAVAILABLE
+
+  HUB_EVENT_NODE_OTA_PROGRESS
+
+  NODE_EVENT_NO_DATA
+
+  NODE_EVENT_METER_PROBE_START
+
+  NODE_EVENT_METER_PROBING
+
+  NODE_EVENT_METER_PROBE_SUCCESS
+
+  NODE_EVENT_METER_PROBE_FAILED
+
+  NODE_EVENT_OTA_STARTED
+
+  NODE_EVENT_OTA_COMPLETE
+
+  NODE_EVENT_OTA_VALIDATED
+
+  NODE_EVENT_OTA_REBOOT
+
+  NODE_EVENT_OTA_FLASH_ERASE
+
+  UNKNOWN_EVENT
+}
+
+type BridgeEventDetailArgsType {
+  meter_mode: Int
+
+  progress: Int
+
+  version: String
+
+  state: String
+
+  old_state: String
+}
+
+type BridgeEventDetailMetricsType {
+  ota: [BridgeOtaInfoType]
+}
+
+type BridgePulseInfraredDataDetailType {
+  protocol: BridgePulseInfraredDataProtocolType!
+}
+
+enum BridgePulseInfraredDataProtocolType {
+  IEC
+
+  SML
+
+  LOGAREX
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: ClientSubscription
+}

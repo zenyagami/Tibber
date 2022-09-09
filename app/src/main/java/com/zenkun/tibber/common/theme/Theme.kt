@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import dagger.hilt.android.internal.managers.ViewComponentManager
 
 val LocalExtendedColors = staticCompositionLocalOf {
     ExtendedColors(
@@ -64,9 +65,18 @@ fun TibberTheme(
         else -> LightColorScheme
     }
     val view = LocalView.current
+    // using @AndroidEntryPoint Hilt return the incorrect context
+    val context = view.context
+    val mContext = if (context is ViewComponentManager.FragmentContextWrapper) {
+        context.baseContext
+    } else {
+        view.context
+    }
+
+
     if (!view.isInEditMode) {
         SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
+            (mContext as Activity).window.statusBarColor = colorScheme.primary.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }

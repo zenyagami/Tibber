@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -28,10 +31,17 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
     implementation project(":data")
+    implementation dependenciesList.hiltAndroid
+    kapt(dependenciesList.hiltCompiler)
+    implementation dependenciesList.Timber
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -1,6 +1,8 @@
 package com.zenkun.data.network.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.zenkun.data.network.AppRepository
+import com.zenkun.data.network.AppRepositoryImpl
 import com.zenkun.data.network.GraphqlDataSource
 import com.zenkun.data.network.GraphqlDataSourceImpl
 import dagger.Binds
@@ -17,6 +19,10 @@ abstract class NetworkModule {
     @Binds
     @Singleton
     abstract fun bindsGraphqlDataSource(impl: GraphqlDataSourceImpl): GraphqlDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsAppRepository(impl: AppRepositoryImpl): AppRepository
 
     companion object {
 

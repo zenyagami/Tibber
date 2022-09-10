@@ -1,16 +1,16 @@
 package com.zenkun.domain
 
-import com.zenkun.data.network.GraphqlDataSource
+import com.zenkun.data.network.AppRepository
 import com.zenkun.domain.model.PowerUpModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetPowerUpDevicesUseCase @Inject constructor(
-    private val graphqlDataSource: GraphqlDataSource
+    private val appRepository: AppRepository
 ) {
     fun execute(): Flow<List<PowerUpModel>> {
-        return graphqlDataSource.queryDevices()
+        return appRepository.getDevices()
             .map {
                 it?.map { item ->
                     PowerUpModel(

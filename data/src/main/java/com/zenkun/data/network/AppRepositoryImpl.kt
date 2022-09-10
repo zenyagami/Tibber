@@ -11,5 +11,4 @@ class AppRepositoryImpl @Inject constructor(
     override fun getDevices(): Flow<List<PowerUpDeviceResponse>?> {
         return graphqlDataSource.queryDevices()
     }
-
 }

@@ -14,11 +14,12 @@ ext {
             androidXbrowser  : '1.4.0',
             apollo           : '3.6.0',
             activityKtx      : '1.5.1',
-            fragmentKtx       : '1.5.2',
+            fragmentKtx      : '1.5.2',
+            mockito          : '4.4.0',
     ]
 
     dependenciesList = [
-            compose     : [
+            compose            : [
                     "androidx.compose.ui:ui:${version.composeVersion}",
                     "androidx.compose.foundation:foundation:${version.composeVersion}",
                     "androidx.compose.material3:material3:${version.material3Compose}",
@@ -58,6 +59,15 @@ ext {
             navigationComponent: [
                     "androidx.navigation:navigation-fragment-ktx:$nav_version",
                     "androidx.navigation:navigation-ui-ktx:$nav_version"
+            ],
+            baseTest           : [
+                    "app.cash.turbine:turbine:0.9.0",
+                    "org.jetbrains.kotlinx:kotlinx-coroutines-test:${version.coroutinesVersion}",
+                    "com.google.truth:truth:1.1.3",
+                    "org.mockito.kotlin:mockito-kotlin:4.0.0",
+                    "org.mockito:mockito-inline:${version.mockito}",
+                    "org.mockito:mockito-core:${version.mockito}",
+                    "org.hamcrest:hamcrest-all:1.3"
             ]
     ]
 }

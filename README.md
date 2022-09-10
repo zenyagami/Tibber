@@ -15,4 +15,5 @@ The app is trying to keep the branding colors, but also trying to make "material
 
 The Device details is in a new activity, this could be a fragment but for now was easier make this in an Activity to avoid handling recomposition of the list and avoid the list being refreshed and not preserving the position.  but this can be changed easily.
 
+The connect disconnect is a dummy loading
 

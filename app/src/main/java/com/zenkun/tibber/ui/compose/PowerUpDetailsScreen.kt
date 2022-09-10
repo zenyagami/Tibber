@@ -178,7 +178,7 @@ private fun PowerUpDetailsScreenContent(
 @Composable
 @Preview
 fun PreviewPowerUpDetailsScreenContent() {
-    TibberTheme(darkTheme = false) {
+    TibberTheme(darkTheme = true) {
         PowerUpDetailsScreenContent(
             isLoading = false,
             powerUpModel = getMockedPowerUpList().shuffled().first(),

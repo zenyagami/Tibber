@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zenkun.tibber.common.theme.GrayBackground
@@ -22,11 +21,13 @@ fun PrimaryButton(
     text: String,
     onButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true
 ) {
     DefaultButton(
         text = text,
         onButtonClicked = onButtonClicked,
-        modifier = modifier
+        modifier = modifier,
+        isEnabled = isEnabled
     )
 }
 
@@ -35,6 +36,7 @@ fun SecondaryButton(
     text: String,
     onButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true
 ) {
     DefaultButton(
         text = text,
@@ -43,7 +45,8 @@ fun SecondaryButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = TibberAppTheme.colors.cardBackgroundColor,
             contentColor = MaterialTheme.colorScheme.onSurface
-        )
+        ),
+        isEnabled = isEnabled
     )
 }
 
@@ -52,12 +55,14 @@ private fun DefaultButton(
     text: String,
     onButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    colors: ButtonColors = ButtonDefaults.buttonColors()
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    isEnabled: Boolean = true
 ) {
     Button(
         onClick = onButtonClicked,
         modifier = modifier,
-        colors = colors
+        colors = colors,
+        enabled = isEnabled
 
     ) {
         Text(
@@ -70,14 +75,16 @@ private fun DefaultButton(
 @Composable
 fun OutlinedTibberButton(
     text: String,
+    strokeColor: Color,
     onButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    strokeColor: Color
+    isEnabled: Boolean = true
 ) {
     OutlinedButton(
         modifier = modifier,
         onClick = onButtonClicked,
         border = BorderStroke(1.dp, strokeColor),
+        enabled = isEnabled
     ) {
         Text(
             text = text,

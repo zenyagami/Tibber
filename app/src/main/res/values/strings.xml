@@ -7,4 +7,6 @@
     <string name="power_up_connect_device_button">Connect to Tibber</string>
     <string name="buy_power_up_device_button">Buy at the Tibber store</string>
     <string name="general_internet_error_message">Something went wrong.. please verify your Internet Connection</string>
+    <string name="success_device_disconnected">Device disconnected</string>
+    <string name="success_device_connected">Device is now connected</string>
 </resources>

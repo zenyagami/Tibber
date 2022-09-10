@@ -26,7 +26,8 @@ class GetPowerUpDevicesUseCaseTest {
 
         getPowerUpDevicesUseCase.execute().test {
             val emission = awaitItem()
-            Truth.assertThat(emission).containsExactlyElementsIn(expected)
+            val total = emission.connectedDevices + emission.disconnectedDevices
+            Truth.assertThat(total).containsExactlyElementsIn(expected)
             cancelAndIgnoreRemainingEvents()
         }
     }

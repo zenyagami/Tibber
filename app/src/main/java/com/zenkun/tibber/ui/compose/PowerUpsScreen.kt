@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.zenkun.domain.model.PowerUpModel
+import com.zenkun.domain.model.PowerUpViewState
 import com.zenkun.tibber.R
 import com.zenkun.tibber.common.HomeViewModel
 import com.zenkun.tibber.common.model.Lce
@@ -41,15 +42,20 @@ fun PowerUpsScreen(
     viewModel: HomeViewModel,
 ) {
     val listState = viewModel.getList.collectAsState(initial = Lce.Loading).value
-    var powerUpList by remember { mutableStateOf<List<PowerUpModel>>(emptyList()) }
+    var powerUpList by remember {
+        mutableStateOf(
+            PowerUpViewState(
+                connectedDevices = emptyList(), disconnectedDevices = emptyList()
+            )
+        )
+    }
 
     val isLoading = listState is Lce.Loading
 
     when (listState) {
         is Lce.Failure -> {
             Toast.makeText(
-                LocalContext.current,
-                R.string.general_internet_error_message, Toast.LENGTH_LONG
+                LocalContext.current, R.string.general_internet_error_message, Toast.LENGTH_LONG
             ).show()
         }
         is Lce.Success -> {
@@ -59,30 +65,26 @@ fun PowerUpsScreen(
     }
 
     PowerUpsScreenContent(
-        isLoading = isLoading,
-        powerUpList = powerUpList,
-        onItemClicked = onItemClicked
+        isLoading = isLoading, powerUpViewState = powerUpList, onItemClicked = onItemClicked
     )
 }
 
 @Composable
 fun PowerUpsScreenContent(
     isLoading: Boolean,
-    powerUpList: List<PowerUpModel>,
+    powerUpViewState: PowerUpViewState,
     onItemClicked: (PowerUpModel) -> Unit,
 ) {
     Scaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
             TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = {
+                modifier = Modifier.fillMaxWidth(), title = {
                     Text(
                         text = stringResource(id = R.string.power_ups_view_title),
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White
                     )
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                }, colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             )
@@ -103,6 +105,31 @@ fun PowerUpsScreenContent(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
+
+                item { Spacer(modifier = Modifier.height(32.dp)) }
+                powerUpViewState.connectedDevices
+                    .takeIf { powerUpModels -> powerUpModels.isNotEmpty() }
+                    ?.let {
+                        item {
+                            Text(
+                                text = stringResource(
+                                    id = R.string.active_power_up_header_label,
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = TibberAppTheme.colors.secondary,
+                            )
+                        }
+                        items(it) {
+                            PowerUpItem(
+                                title = it.title,
+                                description = it.description,
+                                imageUrl = it.imageUrl,
+                                onItemClicked = { onItemClicked(it) },
+                                navIcon = Icons.Default.NavigateNext
+                            )
+                        }
+                    }
+
                 item {
                     Text(
                         text = stringResource(
@@ -110,10 +137,9 @@ fun PowerUpsScreenContent(
                         ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = TibberAppTheme.colors.secondary,
-                        modifier = Modifier.padding(top = 32.dp)
                     )
                 }
-                items(powerUpList) { item ->
+                items(powerUpViewState.disconnectedDevices) { item ->
                     PowerUpItem(
                         title = item.title,
                         description = item.description,
@@ -157,14 +183,11 @@ fun PowerUpItem(
                 .padding(horizontal = 20.dp),
         ) {
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
-                    .crossfade(true)
+                model = ImageRequest.Builder(LocalContext.current).data(imageUrl).crossfade(true)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(imageSize)
+                modifier = Modifier.size(imageSize)
             )
             Column(
                 modifier = Modifier
@@ -206,12 +229,10 @@ fun PowerUpItem(
 fun PreviewPowerUpItem() {
     TibberTheme {
         Box(modifier = Modifier.padding(20.dp)) {
-            PowerUpItem(
-                title = "Tesla",
+            PowerUpItem(title = "Tesla",
                 description = "Smart chare your Tesla",
                 imageUrl = "https://tibber-app-gateway.imgix.net/images/powerup/tile/tesla.png",
-                onItemClicked = {}
-            )
+                onItemClicked = {})
         }
 
     }
@@ -222,14 +243,13 @@ fun PreviewPowerUpItem() {
 @Preview
 private fun PreviewPowerUpsScreenContent() {
     TibberTheme(
-        dynamicColor = false,
-        darkTheme = false
+        dynamicColor = false, darkTheme = false
     ) {
-        PowerUpsScreenContent(
-            isLoading = false,
-            powerUpList = getMockedPowerUpList()
-                .shuffled(),
-            onItemClicked = {}
-        )
+        PowerUpsScreenContent(isLoading = false,
+            powerUpViewState = PowerUpViewState(
+                connectedDevices = getMockedPowerUpList().shuffled().take(2),
+                disconnectedDevices = getMockedPowerUpList().shuffled()
+            ),
+            onItemClicked = {})
     }
 }

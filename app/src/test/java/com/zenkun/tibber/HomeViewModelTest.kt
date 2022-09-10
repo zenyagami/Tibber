@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.zenkun.domain.GetPowerUpDevicesUseCase
 import com.zenkun.domain.model.PowerUpModel
+import com.zenkun.domain.model.PowerUpViewState
 import com.zenkun.tibber.common.HomeViewModel
 import com.zenkun.tibber.common.model.Lce
 import kotlinx.coroutines.flow.flowOf
@@ -22,7 +23,11 @@ class HomeViewModelTest {
 
     @Before
     fun setup() {
-        whenever(getPowerUpDevicesUseCase.execute()).thenReturn(flowOf(items))
+        val viewState = PowerUpViewState(
+            connectedDevices = items.filter { it.isConnected },
+            disconnectedDevices = items.filter { it.isConnected.not() },
+        )
+        whenever(getPowerUpDevicesUseCase.execute()).thenReturn(flowOf(viewState))
         viewModel = HomeViewModel(getPowerUpDevicesUseCase)
     }
 
@@ -45,8 +50,10 @@ class HomeViewModelTest {
             awaitItem() //ignore loading
             val emission = awaitItem()
             assertThat(emission).isInstanceOf(Lce.Success::class.java)
-            val items = (emission as Lce.Success).data
-            assertThat(items).containsExactlyElementsIn(items)
+            val disconnected = (emission as Lce.Success).data.disconnectedDevices
+            val connectedDevices = emission.data.connectedDevices
+            assertThat(disconnected).containsExactlyElementsIn(items.filter { it.isConnected.not() })
+            assertThat(connectedDevices).containsExactlyElementsIn(items.filter { it.isConnected })
             cancelAndIgnoreRemainingEvents()
         }
     }

@@ -9,4 +9,5 @@
     <string name="general_internet_error_message">Something went wrong.. please verify your Internet Connection</string>
     <string name="success_device_disconnected">Device disconnected</string>
     <string name="success_device_connected">Device is now connected</string>
+    <string name="active_power_up_header_label">Active power-ups</string>
 </resources>
